@@ -9,7 +9,7 @@
 int yywrap() { return 1; }
 int main() 
 {
-    yyin = fopen("constsample.txt", "r"); 
+    yyin = fopen("temp.txt", "r"); 
     yylex();
     return 0;
 }
