@@ -1,0 +1,63 @@
+%{
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#define MAX_IDENTIFIER_LENGTH 50 
+char *keywords[] = {
+    "int", "float", "char", "if", "else", "while", "for", "return", "void", "break", "continue", "switch", "case"
+};
+#define NUM_KEYWORDS (sizeof(keywords) / sizeof(keywords[0]))
+int is_keyword(const char *word) {
+    for (int i = 0; i < NUM_KEYWORDS; i++) {
+        if (strcmp(word, keywords[i]) == 0) {
+            return 1;  // Keyword found
+        }
+    }
+    return 0;  // Not a keyword
+}
+%}
+
+%%
+
+"//"[^'\n']*        {}
+"/*"[^*]*\*+([^/*][^*]*\*+)* {}
+[ \t\n]+            { }
+
+[A-Za-z_][A-Za-z0-9_]*  { 
+    if (is_keyword(yytext)) {
+        printf("KEYWORD: %s\n", yytext);  
+    } else {
+        if (strlen(yytext) > MAX_IDENTIFIER_LENGTH) {
+            printf("IDENTIFIER (too long): %s\n", yytext); 
+        } else {
+            printf("IDENTIFIER: %s\n", yytext); 
+        }
+    }
+}
+
+[0-9]+              { printf("CONSTANT: %s\n", yytext); }
+
+[+\-*/%=<>!&|^]     { printf("OPERATOR: %s\n", yytext); }
+
+[;,(){}]            { printf("PUNCTUATION: %s\n", yytext); }
+
+.                   { printf("UNKNOWN: %s\n", yytext); }
+
+%%
+
+int yywrap() {
+    return 1;
+}
+
+int main() {
+    yyin = fopen("recogconstidoperator.txt", "r");  
+    if (!yyin) {
+        perror("Failed to open input file");
+        return 1;
+    }
+
+    yylex();  
+
+    fclose(yyin);  
+    return 0;
+}

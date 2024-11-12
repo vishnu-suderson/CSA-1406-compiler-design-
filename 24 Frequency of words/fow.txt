@@ -1,0 +1,2 @@
+This file has the word digit several times. For example, digit appears here.
+Another line with digit and some other words.

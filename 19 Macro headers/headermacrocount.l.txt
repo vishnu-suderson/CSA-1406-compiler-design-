@@ -1,0 +1,16 @@
+%{
+#include <stdio.h>
+int nmacro = 0, nheader = 0;
+%}
+%%
+#define    { nmacro++;}
+#include   { nheader++;  }
+.;   {}
+%%
+int yywrap() {}
+int main() {
+yyin = fopen("simplemacro.txt", "r");
+yylex();
+printf("Number of macros: %d\n", nmacro);
+printf("Number of headers: %d\n", nheader);
+}

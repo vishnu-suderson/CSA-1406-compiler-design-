@@ -1,0 +1,24 @@
+%{
+int vowcount=0,concount=0;
+%}
+%%
+[AEIOUaeiou]* {vowcount++;}
+.+ {concount++;}
+%%
+int yywrap(){}
+int main()
+{
+printf("enter the string\n");
+yylex();
+printf("no of vowels=%d\n",vowcount);
+printf("no of consonants=%d\n",concount);
+}
+
+OUTPUT:
+E:\ compiler>set path=C:\Program Files (x86)\GnuWin32\bin
+E:\ compiler>flex vowelsandconsonants.l.txt 
+E:\ compiler>set path=C: \MinGW\bin 
+E:\compiler>gcc lex.yy.c 
+E: compiler>a 
+enter the string compiler 
+no of vowels=3 no of consonants=5

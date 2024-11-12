@@ -1,0 +1,29 @@
+%{
+#include <stdio.h>
+#include <ctype.h>
+
+int word_count = 0;
+int num_count = 0;
+%}
+
+%option noyywrap
+
+DIGIT   [0-9]+
+WORD    [a-zA-Z]+
+
+%%
+
+{DIGIT}      { printf("Number %d: %s\n", ++num_count, yytext); }
+{WORD}       { printf("Word %d: %s\n", ++word_count, yytext); }
+[ \t\n]      { /* Ignore whitespace */ }
+.            { /* Ignore any other characters */ }
+
+%%
+
+int main(void) {
+    printf("Enter a sequence of words and numbers:\n");
+    yylex();
+    printf("\nTotal Words: %d\n", word_count);
+    printf("Total Numbers: %d\n", num_count);
+    return 0;
+}

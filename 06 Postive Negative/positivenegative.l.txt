@@ -1,0 +1,15 @@
+%{
+int poscount=0,negcount=0;
+%}
+%%
+[-][0-9]+ {negcount++;}
+[0-9]+ {poscount++;}
+%%
+int yywrap(){}
+int main()
+{
+printf("enter the numbers:\n");
+yylex();
+printf("no of positive digits=%d\n",poscount);
+printf("no of negative digits=%d\n",negcount);
+}
